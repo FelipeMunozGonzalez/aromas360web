@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Control Aroma360 Empresarial</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Librería Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #3282F6;
+        }
+
+        header {
+            background: #2e7d32;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        /* KPIs */
+        .kpi-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+            .card h3 {
+                font-size: 14px;
+                margin-bottom: 5px;
+                color: #333;
+            }
+
+            .card p {
+                font-size: 18px;
+                margin: 0;
+                color: #1e3a8a;
+                font-weight: bold;
+            }
+
+            .card span {
+                font-size: 11px;
+                color: #777;
+            }
+
+        /* Gráficos */
+        .charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px;
+        }
+
+        .chart-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+            .chart-card h3 {
+                text-align: center;
+                font-size: 14px;
+                margin-bottom: 10px;
+                color: #333;
+            }
+
+        .chart-info {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 8px;
+            color: #555;
+        }
+
+        canvas {
+            max-height: 220px;
+        }
+
+        /* Estado y soporte */
+        .status {
+            margin: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: green;
+        }
+
+        .support-btn {
+            display: block;
+            margin: 0 auto 20px auto;
+            padding: 10px 20px;
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Encuesta */
+        .survey-widget {
+            background: #fff;
+            margin: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+            .survey-widget h3 {
+                margin-bottom: 10px;
+            }
+
+            .survey-widget div {
+                font-size: 24px;
+            }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <img src="assets/img/logo.png" alt="Logo Aromas360" class="logo-sidebar">
+        <h1>Panel de Control Aromas360 Empresarial</h1>
+        <p>Mes: Abril 2026 | Oficina: Central</p>
+    </header>
+
+    <!-- KPIs -->
+    <div class="kpi-container">
+        <div class="card">
+            <h3>Consumo Mensual</h3>
+            <p>95 ml</p>
+            <span>↑12% (+1% vs mes anterior)</span>
+        </div>
+        <div class="card">
+            <h3>Satisfacción del Equipo</h3>
+            <p>4.6 ★★★★☆</p>
+        </div>
+        <div class="card">
+            <h3>Alertas Registradas</h3>
+            <p>27</p>
+            <span>40% recarga</span>
+        </div>
+        <div class="card">
+            <h3>Aromas Utilizados</h3>
+            <p>4</p>
+            <span>Lavanda, Eucalipto, Citrus, Lluvia</span>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="charts">
+        <div class="chart-card">
+            <h3>Consumo por Aroma (ml)</h3>
+            <canvas id="consumoAromas"></canvas>
+            <p class="chart-info">Progreso mensual Abril 2026</p>
+        </div>
+        <div class="chart-card">
+            <h3>Tendencia de Consumo</h3>
+            <canvas id="tendenciaConsumo"></canvas>
+            <p class="chart-info">Datos diarios del 01/04 al 07/04</p>
+        </div>
+        <div class="chart-card">
+            <h3>Progreso Mensual (Ene–Jun)</h3>
+            <canvas id="progresoMensual"></canvas>
+            <p class="chart-info">Evolución semestral</p>
+        </div>
+        <div class="chart-card">
+            <h3>Alertas Registradas</h3>
+            <canvas id="alertas"></canvas>
+            <p class="chart-info">Recarga: 40% | Mantenimiento: 29% | Sin alertas: 31%</p>
+        </div>
+        <div class="chart-card">
+            <h3>Uso de Aromas</h3>
+            <canvas id="usoAromas"></canvas>
+            <p class="chart-info">Satisfacción: <strong>4.6 ★★★★☆</strong></p>
+        </div>
+    </div>
+
+    <!-- Estado del dispositivo -->
+    <div class="status">
+        Estado del dispositivo: <span style="color:green;">✔ Conectado</span>
+    </div>
+
+    <!-- Botón de soporte -->
+    <button class="support-btn">Soporte Técnico</button>
+
+    <!-- Encuesta rápida -->
+    <div class="survey-widget">
+        <h3>Encuesta de Satisfacción</h3>
+        <p>¿Cómo te sientes con la ambientación?</p>
+        <div>😀 😐 😞</div>
+    </div>
+
+    <!-- Scripts de gráficos -->
+    <script>
+        // Consumo por Aroma
+        new Chart(document.getElementById('consumoAromas'), {
+            type: 'bar',
+            data: {
+                labels: ['Lavanda', 'Eucalipto', 'Lluvia Primaveral', 'Citrus'],
+                datasets: [{
+                    label: 'Consumo (ml)',
+                    data: [38, 22, 18, 17],
+                    backgroundColor: ['#6a5acd', '#228b22', '#20b2aa', '#ffa500']
+                }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+
+        // Tendencia de Consumo
+        new Chart(document.getElementById('tendenciaConsumo'), {
+            type: 'line',
+            data: {
+                labels: ['01/04', '02/04', '03/04', '04/04', '05/04', '06/04', '07/04'],
+                datasets: [{
+                    label: 'Consumo diario (ml)',
+                    data: [12, 15, 13, 18, 14, 16, 17],
+                    borderColor: '#6a5acd',
+                    fill: false,
+                    tension: 0.3
+                }]
+            }
+        });
+
+        // Progreso Mensual
+        new Chart(document.getElementById('progresoMensual'), {
+            type: 'line',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Consumo mensual (ml)',
+                    data: [2, 4, 5, 7, 8, 9],
+                    borderColor: '#20b2aa',
+                    fill: false,
+                    tension: 0.3
+                }]
+            }
+        });
+
+        // Alertas
+        new Chart(document.getElementById('alertas'), {
+            type: 'pie',
+            data: {
+                labels: ['Recarga', 'Mantenimiento', 'Sin alertas'],
+                datasets: [{
+                    data: [40, 29, 31],
+                    backgroundColor: ['#ffd700', '#ff4500', '#32cd32']
+                }]
+            },
+            options: { plugins: { legend: { position: 'bottom' } } }
+        });
+
+        // Uso de Aromas
+        new Chart(document.getElementById('usoAromas'), {
+            type: 'pie',
+            data: {
+                labels: ['Lavanda', 'Eucalipto', 'Citrus'],
+                datasets: [{
+                    data: [35, 20, 45],
+                    backgroundColor: ['#6a5acd', '#228b22', '#ffa500']
+                }]
+            },
+            options: { plugins: { legend: { position: 'bottom' } } }
+        });
+    </script>
+
+</body>
+</html>
